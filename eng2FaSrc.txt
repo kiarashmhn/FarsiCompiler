@@ -1,0 +1,5 @@
+for i in range ( 1 , 20 ) :
+    print i
+tax = 200
+if tax > 50 :
+    print “hi how you doing?“ 
