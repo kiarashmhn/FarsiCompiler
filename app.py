@@ -9,7 +9,7 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__, static_folder='/Users/kiarash/Desktop/FaCompiler')
 
 UPLOAD_FOLDER = '/Users/kiarash/Desktop/FaCompiler'
-ALLOWED_EXTENSIONS = set(['txt'])
+ALLOWED_EXTENSIONS = set(['txt', 'py'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
@@ -39,28 +39,17 @@ def translate(mode):
         src = filename
         dst = 'dst.txt'
         translated(mode, src, dst)
-        return send_from_directory(app.static_folder,
-                                   dst), 200
+        out = {'file': '/dst.txt'}
+        return jsonify(out), 200
     else:
         out = {'status': 'File type not allowed!'}
         return jsonify(out), 400
 
 
-"""args_list = sys.argv
-if '-en2fa' in args_list:
-    mode = 2
-elif '-fa2en' in args_list:
-    mode = 1
-else:
-    raise ('mode is not defined')
-if '-src' in args_list:
-    src = args_list[args_list.index('-src') + 1]
-else:
-    src = 'src.txt'
-if '-dst' in args_list:
-    dst = args_list[args_list.index('-dst') + 1]
-else:
-    dst = 'dst.txt'"""
+@app.route('/<filename>', methods=['GET'])
+def get_result(filename):
+    return send_from_directory(app.static_folder,
+                               filename), 200
 
 
 def fa2EngAlphabets():
